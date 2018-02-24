@@ -10,7 +10,7 @@
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
     "deploy": "node ./node_modules/vue-gh-pages/index.js",
-    "publish": "npm run build && rm -rf docs; cp -r dist docs && sed -i -e 's/src=\\//src=/g' docs/index.html ; sed -i -e 's/href=\\//href=/g' docs/index.html"
+    "publish": "npm run deploy && rm -rf docs; cp -r dist docs && sed -i -e 's/src=\\//src=/g' docs/index.html ; sed -i -e 's/href=\\//href=/g' docs/index.html"
   },
   "dependencies": {
     "axios": "^0.18.0",
