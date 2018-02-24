@@ -1,9 +1,24 @@
 <template>
   <div class="main">
+    <form>
+      <input type="text" name="" value="" v-model="userInput">
 
-    <button type="button" v-on:click="testCall()">test-api</button>
+      <button v-on:click.prevent="searchCall()">test-api</button>
+    </form>
+    <div v-if="resultsState">
+      <img v-if="loading" src="https://i.imgur.com/BuWTrly.gif" alt="">
+      <h1>{{result.name}}</h1>
+      <h2>{{result.height}}</h2>
+      <h3>{{result.gender}}</h3>
+      <p>{{shipsData.name}}</p>
+      <p>{{shipsData.manufacturer}}</p>
 
-    <h1>{{ship.name}}</h1>
+    </div>
+    <div v-if="oops">
+
+      <p>oops! try a different search</p>
+
+    </div>
 
   </div>
 </template>
@@ -16,25 +31,58 @@ export default {
   name: 'Home',
   data () {
     return {
-      msg: 'Star Wars!',
-      ship: {},
-      randomNum: 1
+      result: {},
+      randomNum: 1,
+      userInput: 'luke',
+      resultsState: true,
+      oops: false,
+      type: 'people',
+      peopleShips: '',
+      shipsData: '',
+      loading: false
     }
   },
   mounted () {
-    this.randomNum = Math.floor(Math.random() * 20)
+    // this.randomGen()
+    this.searchCall()
   },
   methods: {
-    testCall: function () {
-      axios.get('https://swapi.co/api/starships/' + this.randomNum + '/').then(response => {
+    searchCall: function () {
+      this.loading = true
+      axios.get('https://swapi.co/api/' + this.type + '/?search=' + this.userInput).then(response => {
+        this.loading = false
+        console.log(this.userInput)
         console.log(response.data)
-        this.ship = response.data
+        console.log(response.data.results[0])
+        this.peopleShips = response.data.results[0].starships[0]
+        this.result = response.data.results[0]
+        if (this.result == null) {
+          this.oops = true
+          this.resultsState = false
+        } else {
+          this.resultsState = true
+          this.oops = false
+        }
+        if (this.peopleShips == null) {
+          this.peopleShips = 'nothing'
+        } else {
+          this.searchShip()
+        }
+      }).catch(e => {
+        console.log(e)
+      })
+      // this.loading = false
+    },
+    searchShip: function () {
+      axios.get(this.peopleShips).then(response => {
+        console.log(response.data)
+        this.shipsData = response.data
       }).catch(e => {
         console.log(e)
       })
     },
     randomGen: function () {
-      this.randomNum = Math.floor(Math.random() * 20)
+      this.randomNum = Math.floor(Math.random() * 10)
     }
   }
 }
