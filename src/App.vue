@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div class="container">
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -32,5 +34,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.container {
+  background-color: rgba(37, 122, 89, 0.68);
+  height: 60%;
+  width: 60%;
+  padding: 10px;
 }
 </style>

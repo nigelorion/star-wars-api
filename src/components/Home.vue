@@ -21,12 +21,11 @@
       <p>gender: <b>{{result.gender}}</b></p>
       <p>hair color: <b>{{result.hair_color}}</b></p>
       <p>height: <b>{{result.height}}</b></p>
-      <p>homeworld: <b>{{planetData.name}}</b></p>
+      <p>homeworld: <router-link to="/planet">{{planetData.name}}</router-link>
       <p>mass: <b>{{result.mass}}</b></p>
       <p>skin color: <b>{{result.skin_color}}</b></p>
       <p>species: <b>{{speciesData.name}}</b></p>
       <p>language: <b>{{speciesData.language}}</b></p>
-
       <!-- <p>{{shipsData.name}}</p>
       <p>{{shipsData.manufacturer}}</p> -->
     </div>
@@ -56,10 +55,10 @@ export default {
       planetData: ''
     }
   },
-  mounted () {
-    // this.randomGen()
-    this.searchCall()
-  },
+  // mounted () {
+  //   // this.randomGen()
+  //   this.searchCall()
+  // },
   methods: {
     searchCall: function () {
       // this.loading = true
@@ -126,6 +125,8 @@ export default {
       axios.get(this.planetURL).then(response => {
         console.log(response.data)
         this.planetData = response.data
+        // this.$store.state.testingData = this.planetData
+        this.$store.state.planetData = response.data
       }).catch(e => {
         console.log(e)
       })
@@ -145,9 +146,4 @@ a {
   color: #42b983;
 }
 
-.main {
-  background-color: rgba(177, 177, 177, 0.63);
-  height: 60%;
-  width: 60%;
-}
 </style>
