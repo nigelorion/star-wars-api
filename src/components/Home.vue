@@ -15,15 +15,15 @@
     <div v-if="resultsState">
       <!-- <img v-if="loading" src="https://i.imgur.com/BDwzPBF.gif" alt=""> -->
       <h1>{{result.name}}</h1>
-      <p>birth year: <b>{{result.birth_year}}</b></p>
-      <p>eye color: <b>{{result.eye_color}}</b></p>
-      <!-- <p>films: <b>{{result.films}}</b></p> -->
-      <p>gender: <b>{{result.gender}}</b></p>
-      <p>hair color: <b>{{result.hair_color}}</b></p>
-      <p>height: <b>{{result.height}}</b></p>
+      <p>birth year: <b>{{peopleData.birth_year}}</b></p>
+      <p>eye color: <b>{{peopleData.eye_color}}</b></p>
+      <!-- <p>films: <b>{{peopleData.films}}</b></p> -->
+      <p>gender: <b>{{peopleData.gender}}</b></p>
+      <p>hair color: <b>{{peopleData.hair_color}}</b></p>
+      <p>height: <b>{{peopleData.height}}</b></p>
       <p>homeworld: <router-link to="/planet">{{planetData.name}}</router-link>
-      <p>mass: <b>{{result.mass}}</b></p>
-      <p>skin color: <b>{{result.skin_color}}</b></p>
+      <p>mass: <b>{{peopleData.mass}}</b></p>
+      <p>skin color: <b>{{peopleData.skin_color}}</b></p>
       <p>species: <b>{{speciesData.name}}</b></p>
       <p>language: <b>{{speciesData.language}}</b></p>
       <!-- <p>{{shipsData.name}}</p>
@@ -38,11 +38,19 @@ import axios from 'axios'
 
 export default {
   name: 'Home',
+  computed: {
+    peopleData () {
+      return this.$store.state.peopleData
+    },
+    planetData () {
+      return this.$store.state.planetData
+    }
+  },
   data () {
     return {
       result: '',
       randomNum: 1,
-      userInput: 'Luke Skywalker',
+      userInput: '',
       resultsState: true,
       oops: false,
       type: 'people',
@@ -51,8 +59,8 @@ export default {
       loading: false,
       speciesURL: '',
       speciesData: '',
-      planetURL: '',
-      planetData: ''
+      planetURL: ''
+      // planetData: ''
     }
   },
   // mounted () {
@@ -65,7 +73,10 @@ export default {
       this.loading = true
       axios.get('https://swapi.co/api/' + this.type + '/?search=' + this.userInput).then(response => {
         // this.peopleShips = response.data.results[0].starships[0]
+
         this.result = response.data.results[0]
+        this.userInput = this.result.name
+        this.$store.state.peopleData = this.result
         console.log(this.result)
         if (this.result == null) {
           this.oops = true
@@ -124,7 +135,6 @@ export default {
     planetSearch: function () {
       axios.get(this.planetURL).then(response => {
         console.log(response.data)
-        this.planetData = response.data
         // this.$store.state.testingData = this.planetData
         this.$store.state.planetData = response.data
       }).catch(e => {

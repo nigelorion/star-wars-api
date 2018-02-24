@@ -6,6 +6,9 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     planetData: {},
+    shipData: {},
+    peopleData: {},
+    userInput: '',
     testingData: 'data is working!'
   },
   mutations: {
