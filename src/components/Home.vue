@@ -147,7 +147,7 @@ a {
 
 .main {
   background-color: rgba(177, 177, 177, 0.63);
-  height: 50%;
-  width: 50%;
+  height: 60%;
+  width: 60%;
 }
 </style>
