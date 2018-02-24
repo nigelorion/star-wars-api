@@ -41,7 +41,7 @@ export default {
   name: 'Home',
   data () {
     return {
-      result: {},
+      result: '',
       randomNum: 1,
       userInput: 'Luke Skywalker',
       resultsState: true,
@@ -88,8 +88,21 @@ export default {
     randomSearch: function () {
       this.randomGen()
       axios.get('https://swapi.co/api/people/' + this.randomNum).then(response => {
-        console.log(response.data)
+        if (this.result == null) {
+          this.oops = true
+          this.resultsState = false
+        } else {
+          this.result = response.data
+          this.speciesURL = this.result.species[0]
+          this.speciesSearch()
+          this.planetURL = this.result.homeworld
+          this.planetSearch()
+        }
       }).catch(e => {
+        if (e) {
+          this.oops = true
+          this.resultsState = false
+        }
         console.log(e)
       })
     },
